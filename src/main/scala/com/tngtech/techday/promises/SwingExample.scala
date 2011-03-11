@@ -73,8 +73,10 @@ object SwingExample extends SimpleSwingApplication {
           (list, row) <- entries.zipWithIndex
           ((res, delay), column) <- list.zipWithIndex
         } yield {
-          promise(slowEntry(res,delay))(Strategy.SwingWorker).
-            flatMap {a => promise(updateEntry(row,column,a))(Strategy.SwingInvokeLater)}
+          promise(
+              slowEntry(res,delay))(Strategy.SwingWorker).
+                flatMap {a => promise(
+                  updateEntry(row,column,a))(Strategy.SwingInvokeLater)}
         }
       val endRes = updates.traverse(identity)
       endRes.flatMap(x => promise(enableLoadButton(true))(Strategy.SwingInvokeLater))
